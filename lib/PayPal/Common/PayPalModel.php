@@ -175,9 +175,9 @@ class PayPalModel
         foreach ($param as $k => $v) {
             if ($v instanceof PayPalModel) {
                 $ret[$k] = $v->toArray();
-            } elseif (is_array($v) && sizeof($v) <= 0) {
+            } else if (is_array($v) && count($v) <= 0) { // Ensure $v is an array before calling count()
                 $ret[$k] = array();
-            } elseif (is_array($v)) {
+            } else if (is_array($v)) {
                 $ret[$k] = $this->_convertToArray($v);
             } else {
                 $ret[$k] = $v;
@@ -186,7 +186,7 @@ class PayPalModel
         // If the array is empty, which means an empty object,
         // we need to convert array to StdClass object to properly
         // represent JSON String
-        if (sizeof($ret) <= 0) {
+        if (count($ret) <= 0) { // Ensure $ret is an array before calling count()
             $ret = new PayPalModel();
         }
         return $ret;
@@ -250,7 +250,7 @@ class PayPalModel
 
     private function assignValue($key, $value)
     {
-        $setter = 'set'. $this->convertToCamelCase($key);
+        $setter = 'set' . $this->convertToCamelCase($key);
         // If we find the setter, use that, otherwise use magic method.
         if (method_exists($this, $setter)) {
             $this->$setter($value);
